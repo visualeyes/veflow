@@ -1,8 +1,12 @@
 {
   "name": "veflow",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Mercurial helper functions",
   "main": "./bin/index",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/visualeyes/veflow"
+  },
   "scripts": {
     "build": "tsc -p src",
     "test": "jest",
