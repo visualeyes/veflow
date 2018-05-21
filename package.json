@@ -1,6 +1,6 @@
 {
   "name": "veflow",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Mercurial helper functions",
   "main": "./bin/index",
   "repository": {
@@ -8,7 +8,7 @@
     "url": "https://github.com/visualeyes/veflow"
   },
   "scripts": {
-    "build": "tsc -p src",
+    "build": "tsc -p src && node bin/build.js",
     "test": "jest",
     "start": "npm run build && node bin/index"
   },
