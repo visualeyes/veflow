@@ -1,6 +1,10 @@
 # VEFlow (for [Mercurial](https://www.mercurial-scm.org/))
 
-GitHub: https://github.com/visualeyes/veflow
+GitHub: [https://github.com/visualeyes/veflow](https://github.com/visualeyes/veflow)
+
+NPM: [https://www.npmjs.com/package/veflow](https://www.npmjs.com/package/veflow)
+
+![build status](https://codebuild.ap-southeast-2.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiZGZPYjdiRGYraEJ4ZGdlbE4xcnFnTW0vYk1tdFZVaFZTWkdwZHgyeDV2RG1OSDc1dmZrNFF2Um52U0lIZ3F0ZUpqTXpad1dTN0pnQzFOQW5zdU52eG53PSIsIml2UGFyYW1ldGVyU3BlYyI6IldLZTUvbjhuT2hCWE1NNzMiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
 
 ## Requirements
 
