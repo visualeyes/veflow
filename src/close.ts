@@ -1,7 +1,7 @@
 import { execSync, exec } from 'child_process';
 import { isEmptyOrSpaces } from './helpers';
 import { merge } from './merge';
-import { getConfig } from './config';
+import { getConfig, Config } from './config';
 
 const branchBlacklist = [
     'develop',
@@ -26,13 +26,39 @@ export let close = (branch: string) => {
     execSync(`hg com -m \"(veflow) Closed branch: '${branch}'\" --close-branch`);
 
 
-    merge(branch, config.releasedBookmark);
-    let lastBranch = config.releasedBookmark;
-
-    config.unreleasedOrderedBranches.forEach(updateBranch => {
-        merge(lastBranch, updateBranch);
-        lastBranch = updateBranch;
+    buildMergeList(config, branch).forEach(mergeInstruction => {
+        merge(mergeInstruction[0], mergeInstruction[1]);
     });
-
-    merge(lastBranch, 'develop');
 };
+
+
+export let buildMergeList = (config: Config, branch: string): [string, string][] => {
+    const mergeList: [string, string][] = [];
+    let lastBranch = branch;
+    if (branch.startsWith('hotfix')) {
+        mergeList.push([branch, config.releasedBookmark]);
+        lastBranch = config.releasedBookmark;
+    }
+    if (branch.startsWith('release') || branch.startsWith('hotfix')) {
+        let startPoint: string = null;
+        config.unreleasedOrderedBranches.forEach(releaseBranch => {
+            if (branch.startsWith(releaseBranch)) {
+                startPoint = releaseBranch;
+            }
+        });
+        let branchList = config.unreleasedOrderedBranches;
+        if (startPoint !== null) {
+            branchList = branchList.slice(branchList.indexOf(startPoint), branchList.length);
+        }
+
+        branchList.forEach(releaseBranch => {
+            mergeList.push([lastBranch, releaseBranch]);
+            lastBranch = releaseBranch;
+        });
+    }
+
+    mergeList.push([lastBranch, 'develop']);
+
+    return mergeList;
+};
+

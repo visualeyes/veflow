@@ -40,5 +40,6 @@ Replacement for ```hg flow finish```, where hotfixed code is not merged into eac
 Effects:
 1. Pull from ```master``` repository
 2. Close branch (currently active if none specified)
-3. Merge branch into configured ```releasedBookmark```
-4. Iterate through ```unreleasedOrderedBranches``` and merge into each of those.
+3. If ```hotfix```, merge branch into configured ```releasedBookmark```
+4. If ```release``` or ```hotfix```, iterate through ```unreleasedOrderedBranches``` and merge into each of those.
+5. Merge into ```develop```

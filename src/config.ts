@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 
-interface Config {
+export interface Config {
     masterRepo: string;
     releasedBookmark: string;
     unreleasedOrderedBranches: string[];
