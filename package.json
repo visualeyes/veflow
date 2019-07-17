@@ -1,6 +1,6 @@
 {
   "name": "veflow",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Mercurial helper functions",
   "main": "./bin/index",
   "repository": {
