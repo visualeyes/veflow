@@ -27,37 +27,49 @@ export let close = (branch: string) => {
 
 
     buildMergeList(config, branch).forEach(mergeInstruction => {
-        merge(mergeInstruction[0], mergeInstruction[1]);
+        merge(mergeInstruction.from, mergeInstruction.to);
     });
 };
 
 
-export let buildMergeList = (config: Config, branch: string): [string, string][] => {
-    const mergeList: [string, string][] = [];
-    let lastBranch = branch;
-    if (branch.startsWith('hotfix')) {
-        mergeList.push([branch, config.releasedBookmark]);
-        lastBranch = config.releasedBookmark;
-    }
-    if (branch.startsWith('release') || branch.startsWith('hotfix')) {
-        let startPoint: string = null;
-        config.unreleasedOrderedBranches.forEach(releaseBranch => {
-            if (branch.startsWith(releaseBranch)) {
-                startPoint = releaseBranch;
-            }
-        });
-        let branchList = config.unreleasedOrderedBranches;
-        if (startPoint !== null) {
-            branchList = branchList.slice(branchList.indexOf(startPoint), branchList.length);
+export let buildMergeList = (config: Config, branch: string): { from: string, to: string }[] => {
+    const mergeList: { from: string, to: string }[] = [];
+    const sections = branch.match(/(.[^\/]+)/g) || [];
+    let last = branch;
+    sections.forEach((_section, index, _array) => {
+        const next = branch.substr(0, branch.lastIndexOf('/'));
+        if (index < sections.length - 2) {
+            mergeList.push({
+                from: branch,
+                to: next
+            });
+            branch = next;
+            last = next;
         }
+    });
 
-        branchList.forEach(releaseBranch => {
-            mergeList.push([lastBranch, releaseBranch]);
-            lastBranch = releaseBranch;
+    if (branch.startsWith('hotfix')) {
+        mergeList.push({
+            from: branch,
+            to: config.releasedBookmark
         });
+        last = config.releasedBookmark;
     }
 
-    mergeList.push([lastBranch, 'develop']);
+    config.unreleasedOrderedBranches.forEach((releaseBranch, index) => {
+        if ((branch.startsWith('release') && index > config.unreleasedOrderedBranches.indexOf(branch)) || branch.startsWith('hotfix')) {
+            mergeList.push({
+                from: last,
+                to: releaseBranch
+            });
+            last = releaseBranch;
+        }
+    });
+
+    mergeList.push({
+        from: last,
+        to: 'develop'
+    });
 
     return mergeList;
 };

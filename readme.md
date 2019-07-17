@@ -41,9 +41,19 @@ Replacement for ```hg flow finish```, where hotfixed code is not merged into eac
 
 ```veflow close [branch]```
 
+If you omit ```branch``` the currently updated branch will be assumed.
+
 Effects:
+
 1. Pull from ```master``` repository
 2. Close branch (currently active if none specified)
-3. If ```hotfix```, merge branch into configured ```releasedBookmark```
-4. If ```release``` or ```hotfix```, iterate through ```unreleasedOrderedBranches``` and merge into each of those.
-5. Merge into ```develop```
+3. Merge down the tree, for example merge `hotfix/123/321/213` into `hotfix/123/321` then `hotfix/123` etc.
+4. If ```hotfix```, merge branch into configured ```releasedBookmark```
+5. If ```release``` or ```hotfix```, iterate through ```unreleasedOrderedBranches``` and merge into each of those.
+6. Merge into ```develop```
+
+## Development
+
+### Tests
+
+Jest is used for unit tests, you can run the tests by using `npm run test`
